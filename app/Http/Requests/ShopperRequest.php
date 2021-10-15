@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -35,7 +36,10 @@ class ShopperRequest extends FormRequest
                 'required', 'email', 'string', 'min:5', 'max:255',
                 Rule::unique('shoppers')->ignore($this->shopper)
             ],
-            'password' => 'sometimes|required|string|min:8|max:50',
+            'avatar' => 'required|image|max:5120|dimensions:min_width=300,min_height=300',
+            'password' => 'required|string|min:8|max:50',
+            'admin_created_id' => 'required',
+            'admin_updated_id' => 'required',
         ];
     }
 
@@ -46,8 +50,12 @@ class ShopperRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        if($this->phone && Str::length($this->phone) == 12) {
+            $this->merge([
+                'phone' => PhoneNumber::make($this->phone),
+            ]);
+        }
         $this->merge([
-            'phone' => PhoneNumber::make($this->phone, 'CA')->formatE164(),
             'admin_created_id' => auth()->id(),
             'admin_updated_id' => auth()->id(),
         ]);

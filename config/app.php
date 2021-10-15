@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Propaganistas\LaravelPhone\PhoneServiceProvider::class,
         /*
          * Application Service Providers...
          */

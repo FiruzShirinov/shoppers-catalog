@@ -46,6 +46,17 @@ class Shopper extends Authenticatable
     ];
 
     /**
+	 * The password attribute should be hashed
+	 */
+	public function setPasswordAttribute($password)
+	{
+		if ($password !== null && $password !== "")
+		{
+			$this->attributes['password'] = bcrypt($password);
+		}
+    }
+
+    /**
      * The products that belong to the shopper.
      */
     public function products()

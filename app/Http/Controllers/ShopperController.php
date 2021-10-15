@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shopper;
-use Illuminate\Http\Request;
+use App\DataTables\ShoppersDataTable;
+use App\Http\Requests\ShopperRequest;
 
 class ShopperController extends Controller
 {
@@ -12,10 +13,9 @@ class ShopperController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ShoppersDataTable $dataTable)
     {
-        $shoppers = Shopper::paginate(50);
-        return view('shoppers.index', compact('shoppers'));
+        return $dataTable->render('shoppers.index');
     }
 
     /**
@@ -34,7 +34,7 @@ class ShopperController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ShopperRequest $request)
     {
         Shopper::create($request->validated());
         return redirect()->route('shoppers.index');
@@ -69,7 +69,7 @@ class ShopperController extends Controller
      * @param  \App\Models\Shopper  $shopper
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Shopper $shopper)
+    public function update(ShopperRequest $request, Shopper $shopper)
     {
         $shopper->update($request->validated());
         return redirect()->route('shoppers.index');
