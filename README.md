@@ -14,7 +14,8 @@ The test application has three main components: shoppers, products and purchases
  - run `composer install`
  - run `npm install` and `npm run prod`
  - after applying changes to `.env` file `run php artisan key:generate`
- - `run php artisan migrate --seed`
+ - run `php artisan migrate --seed`
+ - run `php artisan storage:link`
 
 ### [+] Usage
  - Copy one of the generated shoppers email address
