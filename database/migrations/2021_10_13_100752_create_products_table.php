@@ -20,8 +20,8 @@ class CreateProductsTable extends Migration
             $table->char('price', 8);
             $table->string('image');
             $table->timestamps();
-            $table->bigInteger('admin_created_id');
-            $table->bigInteger('admin_updated_id');
+            $table->foreignId('admin_created_id')->constrained('shoppers')->cascadeOnDelete();
+            $table->foreignId('admin_updated_id')->constrained('shoppers')->cascadeOnDelete();
         });
     }
 

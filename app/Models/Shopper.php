@@ -21,7 +21,7 @@ class Shopper extends Authenticatable
         'phone',
         'email',
         'password',
-        'avatar',
+        'image',
         'admin_created_id',
         'admin_updated_id',
     ];
@@ -43,6 +43,8 @@ class Shopper extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => 'datetime:d/m/Y',
+        'updated_at' => 'datetime:d/m/Y',
     ];
 
     /**
@@ -57,10 +59,10 @@ class Shopper extends Authenticatable
     }
 
     /**
-     * The products that belong to the shopper.
+     * The purchases that belong to the shopper.
      */
-    public function products()
+    public function purchases()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->hasMany(Purchase::class);
     }
 }

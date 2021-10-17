@@ -26,21 +26,8 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|string|min:2|max:256',
             'SKU' => 'required|string|min:2|max:256',
-            'price' => 'required|string|min:3|max:8',
+            'price' => 'required|numeric|min:1|max:999999',
+            'image' => 'sometimes|image|max:5120|mimes:jpg,png|dimensions:min_width=300,min_height=300',
         ];
-    }
-
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'price' => $this->phone*100,
-            'admin_created_id' => auth()->id(),
-            'admin_updated_id' => auth()->id(),
-        ]);
     }
 }

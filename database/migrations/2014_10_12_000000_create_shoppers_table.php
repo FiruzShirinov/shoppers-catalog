@@ -19,11 +19,11 @@ class CreateShoppersTable extends Migration
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('avatar');
+            $table->string('image');
             $table->rememberToken();
             $table->timestamps();
-            $table->bigInteger('admin_created_id');
-            $table->bigInteger('admin_updated_id');
+            $table->foreignId('admin_created_id')->constrained('shoppers')->cascadeOnDelete();
+            $table->foreignId('admin_updated_id')->constrained('shoppers')->cascadeOnDelete();
         });
     }
 

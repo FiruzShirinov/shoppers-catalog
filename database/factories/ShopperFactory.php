@@ -27,7 +27,7 @@ class ShopperFactory extends Factory
             'phone' => $this->faker->unique()->e164PhoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => 'password', // $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
-            'avatar' => 'https://picsum.photos/400',
+            'image' => '/storage/'.$this->faker->image(public_path('/storage/'),300,300, null, false),
             'remember_token' => Str::random(10),
             'admin_created_id' => 1,
             'admin_updated_id' => 1,

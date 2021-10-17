@@ -26,8 +26,8 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->randomElement(['Samsung', 'Nokia', 'Xiaomi', 'Huawei', 'Oppo', 'Sony', 'HTC', 'LG']).' '.$this->faker->numberBetween(1, 1000).Str::random(1),
             'SKU' => $this->faker->uuid(),
-            'price' => $this->faker->randomFloat(2, 0, 9999)*100,
-            'image' => 'https://picsum.photos/800/600',
+            'price' => $this->faker->randomFloat(2, 0, 9999),
+            'image' => '/storage/'.$this->faker->image(public_path('/storage/'),300,300, null, false),
             'admin_created_id' => 1,
             'admin_updated_id' => 1,
         ];

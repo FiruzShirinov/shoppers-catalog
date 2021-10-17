@@ -31,7 +31,7 @@ class ShopperController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ShopperRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(ShopperRequest $request)
@@ -65,7 +65,7 @@ class ShopperController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ShopperRequest  $request
      * @param  \App\Models\Shopper  $shopper
      * @return \Illuminate\Http\Response
      */

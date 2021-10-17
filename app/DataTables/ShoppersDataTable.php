@@ -21,9 +21,8 @@ class ShoppersDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('avatar', function ($shopper) {
-                // $url= asset('storage/'.$shopper->avatar);
-                return '<img src="'.$shopper->avatar.'" border="0" width="40" class="img-rounded" align="center" />';
+            ->addColumn('image', function ($shopper) {
+                return '<img src="'.$shopper->image.'" border="0" width="40" class="img-rounded" align="center" />';
             })
             ->addColumn('action', function ($shopper) {
                 return '
@@ -44,7 +43,7 @@ class ShoppersDataTable extends DataTable
                 </div>';
             })
             ->editColumn('id', 'ID: {{$id}}')
-            ->rawColumns(['avatar', 'action']);
+            ->rawColumns(['image', 'action']);
     }
 
     /**
@@ -55,7 +54,7 @@ class ShoppersDataTable extends DataTable
      */
     public function query(Shopper $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->withCount('purchases')->withSum('purchases', 'total');
     }
 
     /**
@@ -89,10 +88,12 @@ class ShoppersDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('avatar'),
+            Column::make('image'),
             Column::make('name'),
             Column::make('phone'),
             Column::make('email'),
+            Column::make('purchases_count'),
+            Column::make('purchases_sum_total'),
             Column::make('created_at'),
             Column::make('updated_at'),
             Column::make('admin_created_id'),

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ShopperController;
 
 /*
@@ -21,6 +22,8 @@ Auth::routes(['register' => false]);
 Route::middleware('auth')->group(function () {
     Route::resources([
         'shoppers' => ShopperController::class,
-        'products' => ProductController::class
+        'products' => ProductController::class,
     ]);
+    Route::get('purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+    Route::post('purchases', [PurchaseController::class, 'store'])->name('purchases.store');
 });

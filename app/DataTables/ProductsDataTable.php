@@ -21,6 +21,9 @@ class ProductsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addColumn('image', function ($product) {
+                return '<img src="'.$product->image.'" border="0" width="40" class="img-rounded" align="center" />';
+            })
             ->addColumn('action', function ($product) {
                 return '
                 <div class="d-flex justify-content-between">
@@ -39,7 +42,8 @@ class ProductsDataTable extends DataTable
                     </form>
                 </div>';
             })
-            ->editColumn('id', 'ID: {{$id}}');
+            ->editColumn('id', 'ID: {{$id}}')
+            ->rawColumns(['image', 'action']);
     }
 
     /**
@@ -84,6 +88,7 @@ class ProductsDataTable extends DataTable
     {
         return [
             Column::make('id'),
+            Column::make('image'),
             Column::make('name'),
             Column::make('price'),
             Column::make('SKU'),

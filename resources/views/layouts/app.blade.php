@@ -7,6 +7,9 @@
             <h1>@yield('title')</h1>
         </div>
         <div>
+            <a href="{{ route('purchases.create') }}" class="btn btn-success"><i class="fas fa-gift"></i> Создать покупку</a>
+        </div>
+        <div>
             <a href="@yield('create_route')" class="btn btn-primary"><i class="fas fa-plus"></i> Добавить</a>
         </div>
     </div>

@@ -40,7 +40,7 @@
                 </x-slot>
             </x-adminlte-input>
 
-            <x-adminlte-input-file name="avatar" label="Аватар" placeholder="Выберите файл..." label-class="text-secondary"/>
+            <x-adminlte-input-file name="image" label="Фотография" placeholder="Выберите файл..." label-class="text-secondary"/>
 
             <x-adminlte-button class="btn-block" type="submit" label="Сохранить" theme="success" icon="fas fa-lg fa-save"/>
         </form>

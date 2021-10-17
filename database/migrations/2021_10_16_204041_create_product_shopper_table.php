@@ -13,9 +13,9 @@ class CreateProductShopperTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_shopper', function (Blueprint $table) {
-            $table->foreignId('product_id')->constrained();
-            $table->foreignId('shopper_id')->constrained();
+        Schema::create('product_purchase', function (Blueprint $table) {
+            $table->foreignId('purchase_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
         });
     }
 
