@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Product;
 use App\Models\Shopper;
+use App\Models\Purchase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -47,8 +48,15 @@ class PurchaseTest extends TestCase
 
         $response = $this->post(route('purchases.store'), [
             'shopper_id' => $shopper->id,
-            'product_id' => $product->id
+            'product_ids' => [
+                $product->id,
+                $product->id
+                ]
         ]);
+
+        $this->assertEquals(1, Purchase::count());
+
+        $purchase = Purchase::first();
 
         $this->assertDatabaseHas(
             'product_purchase',
@@ -62,7 +70,7 @@ class PurchaseTest extends TestCase
             'purchases',
             [
                 'shopper_id' => $shopper->id,
-                'total' => $product->price,
+                'total' => $purchase->total*100,
             ]
         );
 
