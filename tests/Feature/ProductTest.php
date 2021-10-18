@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\Product;
 use App\Models\Shopper;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -61,12 +60,11 @@ class ProductTest extends TestCase
 
         $this->actingAs($shopper);
 
-        // Cannot pass the test because of upload image minimum dimensions
         $response = $this->post(route('products.store'), $product = [
             'name'  => 'Samsung s21',
             'SKU' => 'SDKJALD16089673882',
             'price' => 999,
-            'image' => UploadedFile::fake()->create('example.jpg'),
+            'image' => UploadedFile::fake()->image('avatar.jpg', 400, 400)->size(1000),
             'admin_created_id' => 1,
             'admin_updated_id' => 1,
         ]);
@@ -86,15 +84,15 @@ class ProductTest extends TestCase
             [
                 'name' => $product['name'],
                 'SKU' => $product['SKU'],
-                'price' => $product['price'],
-                'image' => $product['image'],
-                'admin_created_id' => $product['admin_created_id'],
-                'admin_updated_id' => $product['admin_updated_id'],
+                'price' => $product['price']*100,
+                'image' => '/storage/'.time().'.'.$product['image']->extension(),
+                'admin_created_id' => $shopper->id,
+                'admin_updated_id' => $shopper->id,
             ]
         );
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('shoppers.index'));
+        $response->assertRedirect(route('products.index'));
     }
 
     /**
@@ -135,6 +133,7 @@ class ProductTest extends TestCase
             'name'  => 'Samsung s21',
             'SKU' => 'SDKJALD16089673882',
             'price' => 999,
+            'image' => UploadedFile::fake()->image('avatar.jpg', 400, 400)->size(1000),
         ]);
 
         $response->assertSessionHasNoErrors([
@@ -149,6 +148,7 @@ class ProductTest extends TestCase
                 'name' => $product['name'],
                 'SKU' => $product['SKU'],
                 'price' => $product['price']*100,
+                'image' => '/storage/'.time().'.'.$product['image']->extension(),
                 'admin_created_id' => $shopper['admin_created_id'],
                 'admin_updated_id' => $shopper['admin_updated_id'],
             ]
@@ -165,7 +165,6 @@ class ProductTest extends TestCase
      */
     public function test_product_can_be_deleted()
     {
-        Artisan::call('config:clear');
         $shopper = Shopper::withoutEvents(function () {
             return Shopper::factory()->create();
         });

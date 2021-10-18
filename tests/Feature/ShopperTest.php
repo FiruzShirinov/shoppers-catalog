@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Shopper;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -50,28 +49,6 @@ class ShopperTest extends TestCase
     }
 
     /**
-     * Test if the shoppers create page requires validation
-     *
-     * @return void
-     */
-    public function test_shoppers_create_page_requires_validation()
-    {
-        $shopper = Shopper::withoutEvents(function () {
-            return Shopper::factory()->create();
-        });
-
-        $this->actingAs($shopper);
-
-        $response = $this->post(route('shoppers.store'));
-
-        $response->assertSessionHasErrors([
-            'name',
-            'phone',
-            'email',
-        ]);
-    }
-
-    /**
      * Test if the shoppers can be created
      *
      * @return void
@@ -84,13 +61,12 @@ class ShopperTest extends TestCase
 
         $this->actingAs($shopper);
 
-        // Cannot pass the test because of upload image minimum dimensions
-        $response = $this->post(route('shoppers.store'), [
+        $response = $this->post(route('shoppers.store'), $shppr = [
             'name'  => 'John Doe',
             'phone' => '+16089673882',
             'email' => 'john.doe@gmail.com',
             'password'  => 'johndoe1234!',
-            'image' => UploadedFile::fake()->create('example.jpg'),
+            'image' => UploadedFile::fake()->image('avatar.jpg', 400, 400)->size(1000),
         ]);
 
         $response->assertSessionHasNoErrors([
@@ -106,13 +82,12 @@ class ShopperTest extends TestCase
         $this->assertDatabaseHas(
             'shoppers',
             [
-                'name'  => 'John Doe',
-                'email' => 'john.doe@gmail.com',
-                'phone' => '+14031234567',
-                'password'  => bcrypt('johndoe1234!'),
-                'image' => 'example.jpg',
-                'admin_created_id' => 1,
-                'admin_updated_id' => 1
+                'name'  => $shppr['name'],
+                'email' => $shppr['email'],
+                'phone' => $shppr['phone'],
+                'image' => '/storage/'.time().'.'.$shppr['image']->extension(),
+                'admin_created_id' => $shopper->id,
+                'admin_updated_id' => $shopper->id,
             ]
         );
 
@@ -155,14 +130,13 @@ class ShopperTest extends TestCase
             'name'  => 'John Doe',
             'email' => 'john.doe@gmail.com',
             'phone' => '+16089673882',
-            // 'password'  => 'johndoe1234!',
+            'image' => UploadedFile::fake()->image('avatar.jpg', 400, 400)->size(1000),
         ]);
 
         $response->assertSessionHasNoErrors([
             'name',
             'phone',
             'email',
-            // 'password'
         ]);
 
         $this->assertDatabaseHas(
@@ -171,9 +145,9 @@ class ShopperTest extends TestCase
                 'name'  => $shppr['name'],
                 'email' => $shppr['email'],
                 'phone' => $shppr['phone'],
-                // 'password'  => Hash::check(bcrypt('johndoe1234!'),bcrypt('johndoe1234!')),
+                'image' => '/storage/'.time().'.'.$shppr['image']->extension(),
                 'admin_created_id' => '1',
-                'admin_updated_id' => $shopper['admin_updated_id']
+                'admin_updated_id' => $shopper->id
             ]
         );
 
@@ -188,7 +162,6 @@ class ShopperTest extends TestCase
      */
     public function test_shopper_can_be_deleted()
     {
-        Artisan::call('config:clear');
         $shopper = Shopper::withoutEvents(function () {
             return Shopper::factory()->create();
         });

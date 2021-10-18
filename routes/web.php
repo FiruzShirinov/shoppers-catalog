@@ -19,6 +19,10 @@ use App\Http\Controllers\ShopperController;
 
 Auth::routes(['register' => false]);
 
+Route::get('/', function() {
+    return redirect()->route('login');
+});
+
 Route::middleware('auth')->group(function () {
     Route::resources([
         'shoppers' => ShopperController::class,
