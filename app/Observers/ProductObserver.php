@@ -32,8 +32,8 @@ class ProductObserver
      */
     public function creating(Product $product)
     {
-        $product->admin_created_id = auth()->id();
-        $product->admin_updated_id = auth()->id();
+        $product->admin_created_id = auth()->check() ? auth()->id() : 1;
+        $product->admin_updated_id = auth()->check() ? auth()->id() : 1;
     }
 
     /**
@@ -44,6 +44,6 @@ class ProductObserver
      */
     public function updating(Product $product)
     {
-        $product->admin_updated_id = auth()->id();
+        $product->admin_updated_id = auth()->check() ? auth()->id() : 1;
     }
 }

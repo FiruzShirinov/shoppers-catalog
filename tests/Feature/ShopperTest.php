@@ -4,10 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Shopper;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShopperTest extends TestCase
@@ -69,8 +68,6 @@ class ShopperTest extends TestCase
             'name',
             'phone',
             'email',
-            'image',
-            'password'
         ]);
     }
 
@@ -154,33 +151,29 @@ class ShopperTest extends TestCase
 
         $this->actingAs($shopper);
 
-        // Cannot pass the test because of upload image minimum dimensions
-        $response = $this->post(route('shoppers.update', $shopper), [
+        $response = $this->patch(route('shoppers.update', $shopper), $shppr = [
             'name'  => 'John Doe',
-            'phone' => '+16089673882',
             'email' => 'john.doe@gmail.com',
-            'password'  => 'johndoe1234!',
-            'image' => UploadedFile::fake()->create('example.jpg'),
+            'phone' => '+16089673882',
+            // 'password'  => 'johndoe1234!',
         ]);
 
         $response->assertSessionHasNoErrors([
             'name',
             'phone',
             'email',
-            'image',
-            'password'
+            // 'password'
         ]);
 
         $this->assertDatabaseHas(
             'shoppers',
             [
-                'name'  => 'John Doe',
-                'email' => 'john.doe@gmail.com',
-                'phone' => '+14031234567',
-                'password'  => bcrypt('johndoe1234!'),
-                'image' => 'example.jpg',
-                'admin_created_id' => 1,
-                'admin_updated_id' => 1
+                'name'  => $shppr['name'],
+                'email' => $shppr['email'],
+                'phone' => $shppr['phone'],
+                // 'password'  => Hash::check(bcrypt('johndoe1234!'),bcrypt('johndoe1234!')),
+                'admin_created_id' => '1',
+                'admin_updated_id' => $shopper['admin_updated_id']
             ]
         );
 

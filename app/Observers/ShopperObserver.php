@@ -32,8 +32,8 @@ class ShopperObserver
      */
     public function creating(Shopper $shopper)
     {
-        $shopper->admin_created_id = auth()->id();
-        $shopper->admin_updated_id = auth()->id();
+        $shopper->admin_created_id = auth()->check() ? auth()->id() : 1;
+        $shopper->admin_updated_id = auth()->check() ? auth()->id() : 1;
     }
 
     /**
@@ -44,6 +44,6 @@ class ShopperObserver
      */
     public function updating(Shopper $shopper)
     {
-        $shopper->admin_updated_id = auth()->id();
+        $shopper->admin_updated_id = auth()->check() ? auth()->id() : 1;
     }
 }

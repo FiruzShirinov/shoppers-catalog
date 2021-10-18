@@ -16,17 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $shopper = Shopper::getEventDispatcher();
-        $product = Product::getEventDispatcher();
-
         Shopper::unsetEventDispatcher();
         Product::unsetEventDispatcher();
 
         Shopper::factory(21)->create();
 
         Purchase::factory(7)->hasProducts(5)->create();
-
-        Shopper::setEventDispatcher($shopper);
-        Product::setEventDispatcher($product);
     }
 }

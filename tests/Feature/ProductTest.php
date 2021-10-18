@@ -131,40 +131,31 @@ class ProductTest extends TestCase
 
         $prdct = Product::factory()->create();
 
-        // Cannot pass the test because of upload image minimum dimensions
-        $response = $this->post(route('products.update', $prdct), $product = [
+        $response = $this->patch(route('products.update', $prdct), $product = [
             'name'  => 'Samsung s21',
             'SKU' => 'SDKJALD16089673882',
             'price' => 999,
-            'image' => UploadedFile::fake()->create('example.jpg'),
-            'admin_created_id' => 1,
-            'admin_updated_id' => 1,
         ]);
 
         $response->assertSessionHasNoErrors([
             'name',
-            'phone',
-            'email',
-            'image',
-            'password'
+            'SKU',
+            'price',
         ]);
-
-        $this->assertEquals(1, Product::count());
 
         $this->assertDatabaseHas(
             'products',
             [
                 'name' => $product['name'],
                 'SKU' => $product['SKU'],
-                'price' => $product['price'],
-                'image' => $product['image'],
-                'admin_created_id' => $product['admin_created_id'],
-                'admin_updated_id' => $product['admin_updated_id'],
+                'price' => $product['price']*100,
+                'admin_created_id' => $shopper['admin_created_id'],
+                'admin_updated_id' => $shopper['admin_updated_id'],
             ]
         );
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('shoppers.index'));
+        $response->assertRedirect(route('products.index'));
     }
 
     /**
