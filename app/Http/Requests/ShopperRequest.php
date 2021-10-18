@@ -33,7 +33,7 @@ class ShopperRequest extends FormRequest
                 Rule::unique('shoppers')->ignore($this->shopper)
             ],
             'email' => [
-                'required', 'email', 'string', 'min:5', 'max:255',
+                'required', 'email', 'string', 'min:6', 'max:255',
                 Rule::unique('shoppers')->ignore($this->shopper)
             ],
             'image' => 'sometimes|required|image|max:5120|mimes:jpg,png|dimensions:min_width=300,min_height=300',
