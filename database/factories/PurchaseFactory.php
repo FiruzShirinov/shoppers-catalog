@@ -23,7 +23,8 @@ class PurchaseFactory extends Factory
     public function definition()
     {
         return [
-            'shopper_id' => Shopper::all()->random()->id
+            'shopper_id' => Shopper::all()->random()->id,
+            'total' => $this->faker->numberBetween(100, 999999999999)
         ];
     }
 }
