@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
         Shopper::unsetEventDispatcher();
         Product::unsetEventDispatcher();
 
-        Shopper::factory(21)->create();
+        Shopper::factory(2100)->create();
 
-        Purchase::factory(7)->hasProducts(5)->create();
+        Purchase::factory(700)->hasProducts(5)->create();
     }
 }
